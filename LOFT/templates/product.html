@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="product__slider">
+        <div class="product__slider-content">
+            <div class="sliderLines">
+                {% for photo in product.prod_photo.all %}
+                <div class="product__slider-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ photo.image.url }}" alt="{{ product.slug }}"
+                        class="product__slider-img">
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="product__slider-panel">
+                <ul class="product__slider-indicators">
+                    {% for photo in product.prod_photo.all %}
+                    <li>
+                        <a href="#!" class="indicators__links {% if forloop.first %}active{% endif %}">
+                            <img src="{{ photo.image.url }}" alt="{{ product.slug }}">
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="product__slider-btns">
+                    <button class="btn__next">
+                        <img src="{% static 'assets/icons/arrow-black.svg' %}" alt="arrow">
+                    </button>
+                    <button class="btn__prev">
+                        <img src="{% static 'assets/icons/arrow-black.svg' %}" alt="arrow">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product__slider-parameters">
+            <div class="product__raiting">
+                <div class="product__raiting-body">
+                    <div class="product__raiting-active"></div>
+                    <div class="product__raiting-items">
+                        <input type="radio" name="raiting" value="1" class="product__raiting-links">
+                        <input type="radio" name="raiting" value="2" class="product__raiting-links">
+                        <input type="radio" name="raiting" value="3" class="product__raiting-links">
+                        <input type="radio" name="raiting" value="4" class="product__raiting-links">
+                        <input type="radio" name="raiting" value="5" class="product__raiting-links">
+                    </div>
+                </div>
+                <div class="product__raiting-value">3.4</div>
+            </div>
+            <h1 class="product__title">{{ product.title }}</h1>
+            <span class="product__categories">{{ product.category.title }}</span>
+            <div class="product__links">
+                <h2 class="product__links-price"> <span>{{ product.price }}</span> ₽</h2>
+                <a href="{% url "basket_action" slug=product.slug action="add" %}" method="POST" class="product__links-buy">Купить</a>
+                <a href="{% url "add_to_favorites" slug=product.slug %}" method="POST" class="products__item-heart product__links-add">
+                    <span>Добавить в желаемое</span></a>
+            </div>
+            <ul class="paremeters__list">
+                <li class="paremetes__list-item">
+                    <h3 class="paremeters__list-title">Цвет</h3>
+                    <a href="#!" class="paremeters__list-btn">
+                        <div class="paremeters__color" style="background-color: {{ product.color_code }};"></div>
+                        <img src="{% static 'assets/icons/arrow-black.svg' %}" alt="arrow-down">
+                    </a>
+                    <ul class="color-prod-list">
+                    {% for prod in product.prod_model.prods.all %}
+                    <li><a href="{{ prod.get_absolute_url }}">{{ prod.color_name }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </li>
+                <li class="paremetes__list-item">
+                    <h3 class="paremeters__list-title">Размер (Д × Ш × В)</h3>
+                    <a href="#!" class="paremeters__list-btn">
+                        <div class="paremeters__size">{{ product.length }} СМ × {{ product.width }} СМ × {{ product.height }} СМ</div>
+                        <img src="{% static 'assets/icons/arrow-black.svg' %}" alt="arrow-down">
+                    </a>
+                    <div class="list__drop"></div>
+                </li>
+            </ul>
+
+            <p class="product__descr">
+                <span class="product__descr-title">Описание</span>
+                {{ product.description }}
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <section class="products">
+        <h2 class="products__title">Похожие товары</h2>
+        {% include 'components/_product_card.html' %}
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="profile">
+        <div class="container">
+            <div class="profile__content">
+                <form method="post" class="profile__form">
+                    {% csrf_token %}
+                    <h2 class="profile__title">Личные данные</h2>
+                    <div class="profile__form-grid">
+
+                        <div class="input__title">
+                            <h2>Имя</h2>
+                            <input type="text" name="first_name" value="{{ edit_user_form.first_name.value }}" class="contact__section-input" required>
+                        </div>
+                        <div class="input__title">
+                            <h2>E-mail</h2>
+                            <input type="email" name="username" value="{{ edit_user_form.username.value }}" class="contact__section-input" required>
+                        </div>
+                        <div class="input__title">
+                            <h2>Фамилия</h2>
+                            <input type="text" name="last_name" value="{{ edit_user_form.last_name.value }}" class="contact__section-input" required>
+                        </div>
+                        <div class="input__title">
+                            <h2>Номер телефона</h2>
+                            <input type="tel" name="phone" value="{{ edit_customer_form.phone.value }}" class="contact__section-input" required>
+                        </div>
+                        <div class="input__title">
+                            <h2>Город</h2>
+                            <input type="text" name="city" value="{{ edit_customer_form.city.value }}" class="contact__section-input" required>
+                        </div>
+                        <div></div>
+                        <div class="input__title _span-two">
+                            <h2>Улица</h2>
+                            <input type="text" name="street" value="{{ edit_customer_form.street.value }}" class="contact__section-input" required>
+                        </div>
+                        <div class="input__title">
+                            <h2>Дом/Корпус</h2>
+                            <input type="text" name="home" value="{{ edit_customer_form.home.value }}" class="contact__section-input">
+                        </div>
+                        <div class="input__title">
+                            <h2>Квартира</h2>
+                            <input type="text" name="flat" value="{{ edit_customer_form.flat.value }}" class="contact__section-input">
+                        </div>
+                    </div>
+                    <button type="submit" method="post" class="btn profile__btn">Изменить</button>
+                </form>
+
+                <div class="profile__orders">
+                    <h2 class="profile__title">Мои заказы</h2>
+
+                    <table class="profile__table">
+                        <tr>
+                            <td colspan="4">Товар</td>
+                            <td>Цена</td>
+                            <td>Дата</td>
+                            <td>Статус</td>
+                        </tr>
+                        {% for order in user.customer.orders.all %}
+                        {% for product in order.products.all %}
+                        <tr>
+                            <td colspan="4" class="profile__title-adaptive">
+                                <div class="tabel__item">
+                                    <img src="{{ product.prod_photo.first.image.url }}" alt="img">
+                                    <span>{{ product.title }}</span>
+                                </div>
+                            </td>
+                            <td class="profile__tabel-data">{{ product.price }}</td>
+                            <td class="profile__tabel-data">{{ order.created_at|date:"d.m.Y" }}</td>
+                            <td class="profile__tabel-data">{{ order.status}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

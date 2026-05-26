@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <section class="products">
+        <div class="slider" data-infinity="true">
+            <div class="sliderLines">
+                <div class="slider__item">
+                    <img src="{% static 'assets/images/banner-1.png' %}" alt="banner" class="slider__img">
+                    <div class="slider__item-content">
+                        <h2 class="slider__item-title">loft мебель</h2>
+                        <p class="slider__item-descr">
+                            Современная и удобная мебель в Анапе
+                        </p>
+                        <a href="#!" class="slider__item-button">СМОТРЕТЬ КАТАЛОГ</a>
+                    </div>
+                </div>
+                <div class="slider__item">
+                    <img src="{% static 'assets/images/banner-2.png' %}" alt="banner" class="slider__img">
+                    <div class="slider__item-content">
+                        <h2 class="slider__item-title">loft мебель</h2>
+                        <p class="slider__item-descr">
+                            Современная и удобная мебель в Анапе
+                        </p>
+                        <a href="#!" class="slider__item-button">СМОТРЕТЬ КАТАЛОГ</a>
+                    </div>
+                </div>
+                <div class="slider__item">
+                    <img src="{% static 'assets/images/banner-3.png' %}" alt="banner" class="slider__img">
+                    <div class="slider__item-content">
+                        <h2 class="slider__item-title">loft мебель</h2>
+                        <p class="slider__item-descr">
+                            Современная и удобная мебель в Анапе
+                        </p>
+                        <a href="#!" class="slider__item-button">СМОТРЕТЬ КАТАЛОГ</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slider__btns">
+                <button class="btn__prev">
+                    <img src="{% static 'assets/icons/arrow.svg' %}" alt="arrow">
+                </button>
+                <button class="btn__next">
+                    <img src="{% static 'assets/icons/arrow.svg' %}" alt="arrow">
+                </button>
+            </div>
+        </div>
+        {% if category %}
+        <h2 class="products__title">Товары категории {{ category.title }}</h2>
+        {% else %}
+        <h2 class="products__title">Хиты продаж</h2>
+        {% endif %}
+        {% include 'components/_product_card.html' %}
+        <!-- /.products__content -->
+    </section>
+    <!-- /.products -->
+</div>
+<!-- /.container -->
+{% endblock %}

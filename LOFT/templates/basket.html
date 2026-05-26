@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+            <div class="container">
+                <section class="basket">
+                    <div class="basket__text">
+                        <h1 class="basket__title">Ваша корзина</h1>
+                        <span class="basket__count"><span>{{ basket.basket_items.count }}</span> предмета</span>
+                    </div>
+                    <div class="basket__items">
+                        {% for item in basket.basket_items.all %}
+                        <div class="basket__item">
+                            <a href="{{ item.prod.get_absolute_url }}" class="basket__item-img">
+                                <img src="{{ item.prod.prod_photo.first.image.url }}" alt="product">
+                            </a>
+                            <div class="basket__item-content">
+                                <div class="basket__item-text">
+                                    <h2 class="basket__item-title">{{ item.prod.title }}</h2>
+                                    <p class="basket__item-price">
+                                        <span class="discount">
+                                            {% if item.prod.discount > 0 %}
+                                                <i class="far fa-badge-percent"></i>
+                                                -{{ item.prod.discount }}%
+                                            {% endif %}
+                                            </span>
+                                            {% if item.prod.discount > 0 %}
+                                            <span class="old__price"><span>{{ item.products_total_price }}</span>₽</span>
+                                            {% endif %}
+                                            <span class="price"><span>{{ item.discounted_price }}</span>₽</span>
+
+                                    </p>
+                                </div>
+                                <div class="basket__options">
+                                    <p class="basket__options-color">
+                                        Цвет:
+                                        <span class="color__name">{{ item.prod.color_name }}</span>
+                                        <span class="color__block" style="background-color: {{ item.prod.color_code }};"></span>
+                                    </p>
+                                    <p class="basket__options-count">
+                                        Количество: <span>{{ item.quantity }}</span>
+                                    </p>
+                                    <p class="basket__options-size">
+                                        Размер(Ш×Д×В): <span>{{ item.prod.width }} СМ × {{ item.prod.length }} СМ × {{  item.prod.height}} СМ</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <a method="post" href="{% url "basket_action" slug=item.prod.slug action="delete" %}" class="basket__delete">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <form class="products__form">
+                        {% csrf_token %}
+                        <span>Итоговая стоимость:<span class="products__form-price">{{ basket.total_price }}₽</span> </span>
+                        <a href="{% url 'basket_action' slug='add' action='add' %}" class="btn products__form-btn">Оформить заказ</a>
+                    </form>
+                </section>
+                <!-- /.basket -->
+
+                <section class="products">
+                    <h2 class="products__title">Хиты продаж</h2>
+                    
+                    <!-- /.products__item -->
+                    {% include "components/_product_card.html" %}
+                    
+                </section>
+                <!-- /.products -->
+ 
+            </div>
+            <!-- /.container -->
+
+{% endblock %}   
