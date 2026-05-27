@@ -1,5 +1,7 @@
+import stripe
 from urllib import request
-
+from django.conf import settings
+from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -10,13 +12,17 @@ from .utils import BasketAuthCustomer
 
 # Create your views here.
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
 def main_page_view(request):
     products = Prod.objects.all().order_by('-created_at')[:12]
     categories = Cat.objects.all()
+    favs = Favorites.objects.filter(user=request.user.customer) if request.user.is_authenticated else None
     context = {
         'products': products,
         'categories': categories,
-        'title': 'Главная страница'
+        'title': 'Главная страница',
+        'favs': favs
     }
     return render(request, 'index.html', context=context)
 
@@ -36,7 +42,10 @@ def product_detail_view(request, slug):
 
 def category_view(request, slug):
     category = get_object_or_404(Cat, slug=slug)
-    products = Prod.objects.filter(category=category)
+    if category.slug != 'akcii':
+        products = Prod.objects.filter(category=category)
+    else:
+        products = Prod.objects.filter(discount__gt=0)
     print(products)
     categories = Cat.objects.all()
     context = {
@@ -86,7 +95,7 @@ def register_user_view(request):
     if request.method == 'POST' and form.is_valid():
         user = form.save()
         if user:
-            Customer.objects.create(user, phone=form.data.get('phone'))
+            Customer.objects.create(user=user, phone=form.cleaned_data['phone'])
             login(request, user)
             return redirect('main')
     context = {
@@ -139,30 +148,30 @@ def basket_view(request):
     else:
         return redirect('login')
 
-@login_required(login_url='login')
-def add_to_favorites_view(request, slug):
-    next_page = request.META.get('HTTP_REFERER', 'main')
-    if request.method == 'POST':
-        favorites = Favorites.objects.get_or_create(user=request.user.customer)
-        product = get_object_or_404(Prod, slug=slug)
-        favorites.products.add(product)
-        return redirect(next_page)
-    else:
-        return redirect('favorites')
-
 
 def favorites_view(request):
     if request.user.is_authenticated:
-        favorites = Favorites.objects.get_or_create(user=request.user.customer)
+        favorites = Favorites.objects.filter(user=request.user.customer)
+        fav_products = [fav.prod for fav in favorites]
         categories = Cat.objects.all()
         context = {
-            'categories': categories,
+            'categories': categories,   
             'title': 'Избранное',
             'favorites': favorites,
+            'fav_products': fav_products,
         }
         return render(request, 'favorites.html', context=context)
     else:
         return redirect('login')
+
+
+@login_required
+def toggle_favorite(request, slug):
+    product = get_object_or_404(Prod, slug=slug)
+    fav, created = Favorites.objects.get_or_create(user=request.user, prod=product)
+    if not created:
+        fav.delete()
+    return redirect(request.META.get("HTTP_REFERER", "main"))
 
 
 @login_required(login_url='login')  
@@ -179,6 +188,7 @@ def profile_view(request):
         return redirect('profile')
     
     else:
+        user = request.user
         edit_user_form = EditUserForm(instance=request.user)
         edit_customer_form = EditCustomerForm(instance=request.user.customer)
         
@@ -199,12 +209,24 @@ def basket_action(request, slug, action):
     return redirect(next_page)
 
 
-def shipping_reg_view(request):
-    if request.user.is_authenticated:
-        context = {
-            'title': 'Доставка'
-        }
-        return render(request, 'shipping.html', context=context)
+@login_required(login_url='login')
+def checkout_view(request):
+    basket = BasketAuthCustomer(request)
+    basket_info = basket.get_basket_info()
+    print(f"DEBUG: basket_products count = {basket_info['basket_products'].count()}")
+    print(f"DEBUG: basket_products = {list(basket_info['basket_products'])}")
+    if basket_info['basket_products']:
+        context = basket_info
+        regions = Region.objects.all()
+        dict_city = {reg.pk: [[city.name, city.pk] for city in reg.cities.all()] for reg in regions}
+        context['title'] = 'Оформление заказа'
+        context['form'] = ShippingForm()
+        context['dict_city'] = dict_city
+        context['categories'] = Cat.objects.all()
+
+        return render(request, 'checkout.html', context)
+    else:
+        return redirect('main')
 
 
 def search_view(request):
@@ -213,3 +235,24 @@ def search_view(request):
             'title': 'Поиск'
         }
     return render(request, 'search.html', context=context)
+
+
+@login_required(login_url='login')
+def shipping_view(request):
+    if request.method == 'POST':
+        form = ShippingForm(request.POST)
+        if form.is_valid():
+            shipping = form.save(commit=False)
+            shipping.customer = request.user.customer
+            shipping.save()
+            return redirect('main')
+    else:
+        form = ShippingForm()
+    
+    categories = Cat.objects.all()
+    context = {
+        'categories': categories,
+        'title': 'Доставка',
+        'form': form,
+    }
+    return render(request, 'shipping.html', context=context)

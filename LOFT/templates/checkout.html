@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="profile">
+        <div class="container">
+            <div class="profile__content">
+                <form method="post" class="profile__form">
+                    {% csrf_token %}
+                    <h2 class="profile__title">Личные данные</h2>
+                    <div class="profile__form-grid">
+
+                        <div class="input__title">
+                            <h2>Имя</h2>
+                            <input type="text" name="first_name" value="{{ request.user.first_name }}" class="contact__section-input" readonly>
+                        </div>
+                        <div class="input__title">
+                            <h2>E-mail</h2>
+                            <input type="email" name="username" value="{{ request.user.username }}" class="contact__section-input" readonly>
+                        </div>
+                        <div class="input__title">
+                            <h2>Фамилия</h2>
+                            <input type="text" name="last_name" value="{{ request.user.last_name }}" class="contact__section-input" readonly>
+                        </div>
+                        <div class="input__title">
+                            <h2>Номер телефона</h2>
+                            <input type="tel" name="phone" value="{{ request.user.customer.phone }}" class="contact__section-input" readonly>
+                        </div>
+                        <div class="input__title">
+                            <h2>Город</h2>
+                            <input type="text" name="city" value="{{ request.user.customer.city|default_if_none:'' }}" class="contact__section-input" required>
+                        </div>
+                        <div></div>
+                        <div class="input__title _span-two">
+                            <h2>Улица</h2>
+                            <input type="text" name="street" value="{{ request.user.customer.street|default_if_none:'' }}" class="contact__section-input" required>
+                        </div>
+                        <div class="input__title">
+                            <h2>Дом/Корпус</h2>
+                            <input type="text" name="home" value="{{ request.user.customer.home|default_if_none:'' }}" class="contact__section-input" required>
+                        </div>
+                        <div class="input__title">
+                            <h2>Квартира</h2>
+                            <input type="text" name="flat" value="{{ request.user.customer.flat|default_if_none:'' }}" class="contact__section-input">
+                        </div>
+                    </div>
+                </form>
+
+                <div class="profile__orders">
+                    <h2 class="profile__title">Моя корзина ({{ basket_products|length }} товаров)</h2>
+
+                    <table class="profile__table">
+                    <tr>
+                        <td colspan="3">Товар</td>
+                        <td>Кол-во</td>
+                        <td>Цена за шт</td>
+                        <td>Сумма</td>
+                    </tr>
+                    {% for product in basket_products %}
+                        <tr>
+                            <td colspan="3" class="profile__title-adaptive">
+                                <div class="tabel__item">
+                                    <img src="{{ product.prod.prod_photo.first.image.url }}" alt="img">
+                                    <span>{{ product.prod.title }}</span>
+                                </div>
+                            </td>
+                            <td class="profile__tabel-data">{{ product.quantity }}</td>
+                            <td class="profile__tabel-data">{{ product.discounted_price }}₽</td>
+                            <td class="profile__tabel-data"><strong>{{ product.products_total_price }}₽</strong></td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="6">Нет товаров в корзине</td></tr>
+                    {% endfor %}
+                    </table>
+                    
+                    <div class="checkout__total" style="padding: 20px; text-align: right; font-size: 18px; font-weight: bold;">
+                        Итого: <span>{{ basket_price }}₽</span>
+                    </div>
+
+                </div>
+                
+            </div>
+            <button type="submit" method="post" class="btn chechout__btn">Оплатить</button>
+        </div>
+    </div>
+{% endblock %}
+

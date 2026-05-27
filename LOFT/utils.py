@@ -10,7 +10,7 @@ class BasketAuthCustomer:
     # Метод получения информации о корзине и товарах
     def get_basket_info(self):
         customer = self.user.customer
-        basket = customer.basket
+        basket, created = Basket.objects.get_or_create(user=customer)
         basket_products = basket.basket_items.all()
         return {
             'customer': customer,

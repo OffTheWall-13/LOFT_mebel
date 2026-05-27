@@ -54,7 +54,7 @@
                     <form class="products__form">
                         {% csrf_token %}
                         <span>Итоговая стоимость:<span class="products__form-price">{{ basket.total_price }}₽</span> </span>
-                        <a href="{% url 'basket_action' slug='add' action='add' %}" class="btn products__form-btn">Оформить заказ</a>
+                        <a href="{% url 'checkout' %}" class="btn products__form-btn">Оформить заказ</a>
                     </form>
                 </section>
                 <!-- /.basket -->

@@ -1,10 +1,10 @@
 {% load static %}
 <div class="products__content">
-{% if category %}
+{% if category and category.slug != 'akcii' %}
     <!-- Товары напрямую из категории -->
     {% for product in category.products.all %}
     <div class="products__item">
-        <a href="#" class="products__item-heart"></a>
+        <a href="{% url "toggle_favorite" slug=product.slug %}" class="products__item-heart"></a>
 
         <a href="{{ product.get_absolute_url }}">
             <img src="{{ product.prod_photo.first.image.url }}" alt="" class="products__item-img">
@@ -43,7 +43,7 @@
     {% for subcat in category.subcats.all %}
         {% for product in subcat.products.all %}
     <div class="products__item">
-        <a href="#" class="products__item-heart"></a>
+        <a href="{% url "toggle_favorite" slug=product.slug %}" class="products__item-heart"></a>
 
         <a href="{{ product.get_absolute_url }}">
             <img src="{{ product.prod_photo.first.image.url }}" alt="" class="products__item-img">
@@ -82,7 +82,7 @@
     {% else %}
     {% for product in products %}
     <div class="products__item">
-        <a href="#" class="products__item-heart"></a>
+        <a href="{% url "toggle_favorite" slug=product.slug %}" class="products__item-heart"></a>
 
         <a href="{% url 'product' slug=product.slug %}">
             <img src="{{ product.prod_photo.first.image.url }}" alt="" class="products__item-img">

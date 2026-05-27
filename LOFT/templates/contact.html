@@ -22,6 +22,7 @@
                             </div>
                             <h2 class="textarea__title">Сообщение</h2>
                             {{ form.message }}
+                            <span id="fileName"></span>
                             <div class="contact__section-btns">
                                 <label for="id_file" class="btn btns__loadfile">Прикрепить файл</label>
                                 <input type="file" id="id_file" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls">
@@ -68,5 +69,19 @@
             <!-- /.container -->
         </main>
         <!-- /.main -->
+{% endblock %}
 
+{% block extra_js %}
+<script>
+    const fileInput = document.getElementById('id_file');
+    const fileName = document.getElementById('fileName');
+
+    fileInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+            fileName.textContent = "Вы выбрали: " + this.files[0].name;
+        } else {
+            fileName.textContent = "";
+        }
+    });
+</script>
 {% endblock %}

@@ -15,25 +15,40 @@ class LoginForm(AuthenticationForm):
 
 
 class RegistrationForm(UserCreationForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'contact__section-input',
+        'autocomplete': 'off'
+    }), label='Имя')
+
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'contact__section-input',
+        'autocomplete': 'off'
+    }), label='Фамилия')
+
     username = forms.EmailField(widget=forms.EmailInput(attrs={
-        'class': 'contact__section-input'
+        'class': 'contact__section-input',
+        'autocomplete': 'off'
     }), label='E-mail')
 
     phone = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'contact__section-input'
+        'class': 'contact__section-input',
+        'autocomplete': 'off'
     }), label='Номер телефона')
 
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'class': 'contact__section-input'
+        'class': 'contact__section-input',
+        'autocomplete': 'new-password'
     }), label='Пароль')
 
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={
-        'class': 'contact__section-input'
+        'class': 'contact__section-input',
+        'autocomplete': 'new-password'
     }), label='Подтверждение пароля')
 
     class Meta:
         model = User
-        fields = ['username', 'phone', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'password1', 'password2']
+
 
 
 class EditUserForm(forms.ModelForm):

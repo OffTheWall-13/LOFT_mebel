@@ -55,7 +55,7 @@
             <div class="product__links">
                 <h2 class="product__links-price"> <span>{{ product.price }}</span> ₽</h2>
                 <a href="{% url "basket_action" slug=product.slug action="add" %}" method="POST" class="product__links-buy">Купить</a>
-                <a href="{% url "add_to_favorites" slug=product.slug %}" method="POST" class="products__item-heart product__links-add">
+                <a href="{% url "toggle_favorite" slug=product.slug %}" method="POST" class="products__item-heart product__links-add">
                     <span>Добавить в желаемое</span></a>
             </div>
             <ul class="paremeters__list">

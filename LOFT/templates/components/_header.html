@@ -22,7 +22,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'contacts' %}" class="nav__list-links">
+                        <a href="{% url 'contact' %}" class="nav__list-links">
                             <img src="{% static 'assets/icons/contacts.svg' %}" alt="contacts">
                             Контакты
                         </a>
@@ -37,10 +37,20 @@
                         </a>
                     </li>
                     <li>
-                         <a href="{% url 'registration' %}" class="nav__contacts-links">
-                            <i class="far fa-truck"></i>
-                            Доставка
+                            {% if not request.user.is_authenticated %}
+<div class="auth-links">
+    <a href="{% url 'login' %}" class="nav__contacts-links">Вход</a>
+    <span class="divider"></span>
+    <a href="{% url 'registration' %}" class="nav__contacts-links">Регистрация</a>
+</div>
+
+                        
+                        
+                        {% else %}
+                         <a href="{% url 'logout' %}" class="nav__contacts-links">
+                            Выход
                         </a>
+                        {% endif %}
                     </li>
                 </ul>
                 <!-- /.nav__contacts -->
@@ -139,7 +149,7 @@
 
                         <ul class="header__list">
                             <li>
-                                <a href="{% url 'registration' %}" class="header__list-item _truck">
+                                <a href="{% url 'shipping' %}" class="header__list-item _truck">
                                     <i class="far fa-truck"></i>
                                     Доставка
                                 </a>
@@ -213,7 +223,7 @@
                         </li>
                         <li>
                             <a href="{% url 'category' slug='akcii' %}" class="header__list-links">
-                                акция
+                                Акции
                             </a>
                         </li>
                     </ul>

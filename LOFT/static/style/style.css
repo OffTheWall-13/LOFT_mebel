@@ -99,6 +99,21 @@
     font-size: 14px;
     color: #fff;
     line-height: 16px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.auth-links {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* расстояние между ссылками и линией */
+}
+
+.auth-links .divider {
+    width: 1px;
+    height: 16px;
+    background-color: #999; /* цвет линии */
+    display: inline-block;
 }
 
 .nav__list li:not(:last-child) {
@@ -395,6 +410,12 @@
     margin-bottom: 35px;
 }
 
+.favorites .products__content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
 .products__content {
     width: 100%;
     display: grid;
@@ -403,6 +424,7 @@
     column-gap: 30px;
     row-gap: 10px;
 }
+
 
 
 
@@ -1686,10 +1708,6 @@ label[for="id_file"] {
     border-collapse: collapse;
 }
 
-.profile__table tr:last-child {
-    display: none;
-}
-
 .profile__table tr td {
     text-align: center;
     padding: 25px 15px;
@@ -1741,6 +1759,11 @@ label[for="id_file"] {
 }
 
 .profile__btn {
+    align-self: flex-end;
+    margin-top: 20px;
+}
+
+.chechout__btn {
     align-self: flex-end;
     margin-top: 20px;
 }
