@@ -203,6 +203,9 @@ def basket_view(request):
         categories = Cat.objects.all()
         products = Prod.objects.all().order_by('-created_at')
         context = {
+            'favorites_ids': set(
+                Favorites.objects.filter(user=request.user.customer).values_list('prod_id', flat=True)
+            ),
             'categories': categories,
             'title': 'Корзина',
             'basket': basket,
@@ -244,7 +247,6 @@ def toggle_favorite(request, slug):
     else:
         Favorites.objects.create(user=customer, prod=product)
         status = "added"
-    print('>>>>>>  ' + str(status))
 
     return JsonResponse({"status": status})
 
