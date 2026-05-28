@@ -1,6 +1,5 @@
 from django.urls import path
 from .views import *
-from mebel import settings
 from django.conf import settings
 from django.conf.urls.static import static
 
