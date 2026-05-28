@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 
 # Create your models here.
@@ -59,6 +61,27 @@ class Prod(models.Model):
     
     def add_to_cart(self):
         return reverse('add_to_cart', kwargs={'slug': self.slug})
+    
+    def get_price(self):
+        if self.discount:
+            p = int(self.price - (self.price * self.discount / 100))
+        else:
+            p = self.price
+
+        return p
+    
+    
+    @property
+    def average_rating(self):
+        ratings = self.ratings.all()
+
+        if ratings.exists():
+
+            total = sum(r.value for r in ratings)
+
+            return round(total / ratings.count(), 1)
+
+        return 0
 
     class Meta:
         verbose_name = 'Товар'
@@ -159,12 +182,12 @@ class Favorites(models.Model):
     class Meta:
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные'
+        unique_together = ('user', 'prod')
         
         
 class Shipping(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name='Покупатель', related_name='shippings')
     phone = models.CharField(max_length=30, verbose_name='Номер получателя')
-    comment = models.CharField(max_length=500, verbose_name='Комментарий к заказу', null=True, blank=True)
     region = models.ForeignKey('Region', on_delete=models.CASCADE, verbose_name='Регион')
     city = models.ForeignKey('City', on_delete=models.CASCADE, verbose_name='Город')
     street = models.CharField(max_length=100, verbose_name='Улица')
@@ -173,7 +196,7 @@ class Shipping(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     
     def __str__(self):
-        return f'Доставка для покупателя {self.customer.user.username} по адресу {self.address}'
+        return f'Доставка для покупателя {self.customer.user.username} совершена в {self.created_at}'
     
     class Meta:
         verbose_name = 'Доставку'
@@ -201,3 +224,55 @@ class City(models.Model):
     class Meta:
         verbose_name = 'Город'
         verbose_name_plural = 'Города'
+
+
+class Order(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name='Покупатель', related_name='orders')
+    shipping = models.OneToOneField(Shipping, on_delete=models.CASCADE, verbose_name='Доставка')
+    price = models.IntegerField(default=0, verbose_name='Сумма заказа')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата заказа')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата изменения заказа')
+    completed = models.BooleanField(default=False, verbose_name='Статус заказа получин ли')
+
+    def __str__(self):
+        return f'Заказ №: {self.pk}, покупателя {self.customer.user} на сумму {self.price}'
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы покупателей'
+
+
+class ProductOrder(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Заказ', related_name='products')
+    prod = models.ForeignKey(Prod, on_delete=models.PROTECT, verbose_name='Товар', related_name='orders')
+    title = models.CharField(max_length=150, verbose_name='Название твоара')
+    slug = models.CharField(max_length=150, verbose_name='Слаг твоара')
+    price = models.IntegerField(default=0, verbose_name='Цена твоара')
+    quantity = models.IntegerField(default=0, verbose_name='В кол-ве')
+    total_price = models.IntegerField(default=0, verbose_name='На сумму')
+
+    def __str__(self):
+        return f'Товар {self.title} заказа №: {self.order.pk} покупателя {self.order.customer.user}'
+
+    class Meta:
+        verbose_name = 'Товар в заказ'
+        verbose_name_plural = 'Заказов товары'
+
+
+class ProductRating(models.Model):
+    product = models.ForeignKey(Prod, on_delete=models.CASCADE, related_name="ratings")
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    value = models.PositiveSmallIntegerField(
+    default=1,
+    validators=[
+        MinValueValidator(1),
+        MaxValueValidator(5)
+    ],
+    verbose_name='Оценка'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Рейтинг товара'
+        verbose_name_plural = 'Рейтинги товаров'
+        unique_together = ("product", "user")

@@ -57,21 +57,33 @@
                             <td>Дата</td>
                             <td>Статус</td>
                         </tr>
-                        {% for order in user.customer.orders.all %}
-                        {% for product in order.products.all %}
-                        <tr>
-                            <td colspan="4" class="profile__title-adaptive">
-                                <div class="tabel__item">
-                                    <img src="{{ product.prod_photo.first.image.url }}" alt="img">
-                                    <span>{{ product.title }}</span>
-                                </div>
-                            </td>
-                            <td class="profile__tabel-data">{{ product.price }}</td>
-                            <td class="profile__tabel-data">{{ order.created_at|date:"d.m.Y" }}</td>
-                            <td class="profile__tabel-data">{{ order.status}}</td>
-                        </tr>
-                        {% endfor %}
-                        {% endfor %}
+{% for order in user.customer.orders.all %}
+    {% for product_order in order.products.all %}
+    <tr>
+        <td colspan="4" class="profile__title-adaptive">
+            <div class="tabel__item">
+                {% with product_order.prod.prod_photo.all as photos %}
+                {% if photos %}
+                    <img src="{{ photos.0.image.url }}">
+                {% endif %}
+                {% endwith %}
+                            <span>{{ product_order.title }}</span>
+            </div>
+        </td>
+        <td class="profile__tabel-data">{{ product_order.price }}</td>
+        <td class="profile__tabel-data">{{ order.created_at|date:"d.m.Y" }}</td>
+        <td class="profile__tabel-data">
+            {% if order.completed %}
+                Завершён
+            {% else %}
+                В обработке
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+{% endfor %}
+
+
                     </table>
                 </div>
             </div>

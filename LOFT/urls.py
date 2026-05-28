@@ -1,5 +1,8 @@
 from django.urls import path
 from .views import *
+from mebel import settings
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', main_page_view, name='main'),
@@ -15,8 +18,9 @@ urlpatterns = [
     path('logout/', logout_user_view, name='logout'),
     path('registration/', register_user_view, name='registration'),
     path('checkout/', checkout_view, name='checkout'),
-    path('search/', search_view, name='search'),
     path('basket_action/<slug:slug>/<str:action>/', basket_action, name='basket_action'),
-    path('shipping/', shipping_view, name='shipping'),
-]
+    path('create-checkout-session/', create_checkout_session, name='create_checkout_session'),
+    path('success/', success_payment_view, name='success'),
+    path("rate/<slug:slug>/", rate_product, name="rate_product")
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

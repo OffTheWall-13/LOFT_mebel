@@ -46,15 +46,16 @@
                 </button>
             </div>
         </div>
-        {% if category %}
-        <h2 class="products__title">Товары категории {{ category.title }}</h2>
+
+        {% if not_found_message %}
+            <h2 class="products__title">{{ not_found_message }}</h2>
+        {% elif category %}
+            <h2 class="products__title">Товары категории {{ category.title }}</h2>
         {% else %}
-        <h2 class="products__title">Хиты продаж</h2>
+            <h2 class="products__title">Хиты продаж</h2>
         {% endif %}
+
         {% include 'components/_product_card.html' %}
-        <!-- /.products__content -->
     </section>
-    <!-- /.products -->
 </div>
-<!-- /.container -->
 {% endblock %}

@@ -2,24 +2,98 @@
 {% load static %}
 
 {% block content %}
+
+<style>
+
+/* Фикс стрелок в параметрах */
+.paremeters__list-btn img {
+    transform: rotate(180deg);
+    transition: 0.2s ease;
+}
+
+.product__raiting {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.product__raiting-body {
+    position: relative;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.product__raiting-body::before {
+    content: "★★★★★";
+    display: block;
+    color: #dcdcdc;
+}
+
+.product__raiting-active {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 0%;
+}
+
+.product__raiting-active::before {
+    content: "★★★★★";
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #ffd300;
+}
+
+.product__raiting-items {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+}
+
+.product__raiting-links {
+    flex: 0 0 20%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.product__raiting-value {
+    font-size: 20px;
+    font-weight: 600;
+}
+</style>
+
 <div class="container">
     <div class="product__slider">
         <div class="product__slider-content">
+
             <div class="sliderLines">
                 {% for photo in product.prod_photo.all %}
                 <div class="product__slider-item {% if forloop.first %}active{% endif %}">
-                    <img src="{{ photo.image.url }}" alt="{{ product.slug }}"
-                        class="product__slider-img">
+                    <img src="{{ photo.image.url }}"
+                         alt="{{ product.slug }}"
+                         class="product__slider-img">
                 </div>
                 {% endfor %}
             </div>
 
             <div class="product__slider-panel">
+
                 <ul class="product__slider-indicators">
                     {% for photo in product.prod_photo.all %}
                     <li>
-                        <a href="#!" class="indicators__links {% if forloop.first %}active{% endif %}">
-                            <img src="{{ photo.image.url }}" alt="{{ product.slug }}">
+                        <a href="#!"
+                           class="indicators__links {% if forloop.first %}active{% endif %}">
+                            <img src="{{ photo.image.url }}"
+                                 alt="{{ product.slug }}">
                         </a>
                     </li>
                     {% endfor %}
@@ -29,6 +103,7 @@
                     <button class="btn__next">
                         <img src="{% static 'assets/icons/arrow-black.svg' %}" alt="arrow">
                     </button>
+
                     <button class="btn__prev">
                         <img src="{% static 'assets/icons/arrow-black.svg' %}" alt="arrow">
                     </button>
@@ -37,9 +112,15 @@
         </div>
 
         <div class="product__slider-parameters">
-            <div class="product__raiting">
+
+            <!-- РЕЙТИНГ -->
+            <div class="product__raiting"
+                 data-rating="{{ product.average_rating|default:0 }}">
+
                 <div class="product__raiting-body">
+
                     <div class="product__raiting-active"></div>
+
                     <div class="product__raiting-items">
                         <input type="radio" name="raiting" value="1" class="product__raiting-links">
                         <input type="radio" name="raiting" value="2" class="product__raiting-links">
@@ -47,52 +128,212 @@
                         <input type="radio" name="raiting" value="4" class="product__raiting-links">
                         <input type="radio" name="raiting" value="5" class="product__raiting-links">
                     </div>
+
                 </div>
-                <div class="product__raiting-value">3.4</div>
+
+                <div class="product__raiting-value">
+                    {{ product.average_rating|floatformat:1|default:"0.0" }}
+                </div>
+
             </div>
+
             <h1 class="product__title">{{ product.title }}</h1>
-            <span class="product__categories">{{ product.category.title }}</span>
+
+            <span class="product__categories">
+                {{ product.category.title }}
+            </span>
+
             <div class="product__links">
-                <h2 class="product__links-price"> <span>{{ product.price }}</span> ₽</h2>
-                <a href="{% url "basket_action" slug=product.slug action="add" %}" method="POST" class="product__links-buy">Купить</a>
-                <a href="{% url "add_to_favorites" slug=product.slug %}" method="POST" class="products__item-heart product__links-add">
-                    <span>Добавить в желаемое</span></a>
+
+                <h2 class="product__links-price">
+                    <span>{{ product.price }}</span> ₽
+                </h2>
+
+                <a href="{% url 'basket_action' slug=product.slug action='add' %}"
+                   class="product__links-buy">
+                    Купить
+                </a>
+
+                <a href="{% url 'toggle_favorite' slug=product.slug %}"
+                   class="products__item-heart product__links-add">
+
+                    <span>Добавить в желаемое</span>
+
+                </a>
+
             </div>
+
             <ul class="paremeters__list">
+
                 <li class="paremetes__list-item">
-                    <h3 class="paremeters__list-title">Цвет</h3>
-                    <a href="#!" class="paremeters__list-btn">
-                        <div class="paremeters__color" style="background-color: {{ product.color_code }};"></div>
-                        <img src="{% static 'assets/icons/arrow-black.svg' %}" alt="arrow-down">
-                    </a>
+
+                    <h3 class="paremeters__list-title">
+                        Цвет
+                    </h3>
+
+                        <div class="paremeters__color"
+                             style="background-color: {{ product.color_code }};">
+                        </div>
+
+                        <img src="{% static 'assets/icons/arrow-black.svg' %}"
+                             alt="arrow-down" style="transform: rotate(90deg);">
+
                     <ul class="color-prod-list">
-                    {% for prod in product.prod_model.prods.all %}
-                    <li><a href="{{ prod.get_absolute_url }}">{{ prod.color_name }}</a></li>
-                    {% endfor %}
+                        {% for prod in product.prod_model.prods.all %}
+                        <li>
+                            <a href="{{ prod.get_absolute_url }}">
+                                {{ prod.color_name }}
+                            </a>
+                        </li>
+                        {% endfor %}
                     </ul>
+
                 </li>
+
                 <li class="paremetes__list-item">
-                    <h3 class="paremeters__list-title">Размер (Д × Ш × В)</h3>
-                    <a href="#!" class="paremeters__list-btn">
-                        <div class="paremeters__size">{{ product.length }} СМ × {{ product.width }} СМ × {{ product.height }} СМ</div>
-                        <img src="{% static 'assets/icons/arrow-black.svg' %}" alt="arrow-down">
-                    </a>
-                    <div class="list__drop"></div>
+
+                    <h3 class="paremeters__list-title">
+                        Размер (Д × Ш × В)
+                    </h3>
+
+                        <div class="paremeters__size">
+                            {{ product.length }} СМ ×
+                            {{ product.width }} СМ ×
+                            {{ product.height }} СМ
+                        </div>
+
+
                 </li>
+
             </ul>
 
             <p class="product__descr">
-                <span class="product__descr-title">Описание</span>
+
+                <span class="product__descr-title">
+                    Описание
+                </span>
+
                 {{ product.description }}
+
             </p>
+
         </div>
     </div>
 </div>
 
 <div class="container">
+
     <section class="products">
-        <h2 class="products__title">Похожие товары</h2>
+
+        <h2 class="products__title">
+            Похожие товары
+        </h2>
+
         {% include 'components/_product_card.html' %}
+
     </section>
+
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ratings = document.querySelectorAll('.product__raiting');
+
+    ratings.forEach(rating => {
+
+        const ratingActive = rating.querySelector('.product__raiting-active');
+        const ratingValue = rating.querySelector('.product__raiting-value');
+        const ratingInputs = rating.querySelectorAll('.product__raiting-links');
+
+        const productSlug = "{{ product.slug }}";
+
+        let currentRating = parseFloat(rating.dataset.rating) || 0;
+
+        updateRating(currentRating);
+
+        function updateRating(value) {
+
+            const width = value / 5 * 100;
+
+            ratingActive.style.width = `${width}%`;
+
+            ratingValue.textContent = parseFloat(value).toFixed(1);
+        }
+
+        ratingInputs.forEach(input => {
+
+            input.addEventListener('mouseenter', function () {
+                updateRating(this.value);
+            });
+
+            input.addEventListener('mouseleave', function () {
+                updateRating(currentRating);
+            });
+
+            input.addEventListener('click', function () {
+
+                const selectedRating = parseFloat(this.value);
+
+                fetch(`/rate/${productSlug}/`, {
+
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+
+                    body: JSON.stringify({
+                        rating: selectedRating
+                    })
+
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    currentRating = data.average_rating;
+
+                    updateRating(currentRating);
+
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+
+            });
+
+        });
+
+    });
+
+    function getCookie(name) {
+
+        let cookieValue = null;
+
+        if (document.cookie && document.cookie !== '') {
+
+            const cookies = document.cookie.split(';');
+
+            for (let i = 0; i < cookies.length; i++) {
+
+                const cookie = cookies[i].trim();
+
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+
+                    break;
+                }
+            }
+        }
+
+        return cookieValue;
+    }
+
+});
+</script>
+
 {% endblock %}

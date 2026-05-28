@@ -38,11 +38,11 @@
                     </li>
                     <li>
                             {% if not request.user.is_authenticated %}
-<div class="auth-links">
-    <a href="{% url 'login' %}" class="nav__contacts-links">Вход</a>
-    <span class="divider"></span>
-    <a href="{% url 'registration' %}" class="nav__contacts-links">Регистрация</a>
-</div>
+                        <div class="auth-links">
+                            <a href="{% url 'login' %}" class="nav__contacts-links">Вход</a>
+                            <span class="divider"></span>
+                            <a href="{% url 'registration' %}" class="nav__contacts-links">Регистрация</a>
+                        </div>
 
                         
                         
@@ -141,15 +141,14 @@
                         <a href="{% url 'main' %}" class="logo">
                             <img src="{% static 'assets/icons/LOGO.svg' %}" alt="logo">
                         </a>
-                        <form class="header__search">
-                            {% csrf_token %}
+                        <form method="get" action="{% url 'main' %}" class="header__search">
                             <i class="fal fa-search"></i>
-                            <input type="text" class="header__search-txt" placeholder="Поиск">
+                            <input type="text" name="q" class="header__search-txt" placeholder="Поиск">
                         </form>
 
                         <ul class="header__list">
                             <li>
-                                <a href="{% url 'shipping' %}" class="header__list-item _truck">
+                                <a href="{% url 'checkout' %}" class="header__list-item _truck">
                                     <i class="far fa-truck"></i>
                                     Доставка
                                 </a>

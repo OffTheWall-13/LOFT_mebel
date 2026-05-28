@@ -117,19 +117,25 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactMessage
         fields = ['name', 'username', 'message', 'file']
-        
 
 class ShippingForm(forms.ModelForm):
     class Meta:
         model = Shipping
-        fields = ('region', 'city', 'street', 'home', 'flat', 'phone', 'comment')
+        fields = ('phone', 'region', 'city', 'street', 'home', 'flat')
         widgets = {
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'region': forms.Select(attrs={'class': 'form-control'}),
             'city': forms.Select(attrs={'class': 'form-control'}),
             'street': forms.TextInput(attrs={'class': 'form-control'}),
             'home': forms.TextInput(attrs={'class': 'form-control'}),
             'flat': forms.TextInput(attrs={'class': 'form-control'}),
-            'phone': forms.TelInput(attrs={'class': 'form-control'}),
-            'comment': forms.Textarea(attrs={'class': 'form-control'})
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        region = cleaned_data.get('region')
+        city = cleaned_data.get('city')
+
+        if region and city and city.region != region:
+            self.add_error('city', 'Выбранный город не принадлежит указанному региону.')
+        return cleaned_data

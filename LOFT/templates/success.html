@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="success">
+    <div class="success__container">
+        <img src="{% static 'assets/icons/saving.svg' %}" alt="Успешно" class="success__icon">
+        <h1 class="success__title">Оплата прошла успешно!</h1>
+        <p class="success__text">Спасибо за ваш заказ. Мы уже начали его обработку.</p>
+        <a href="{% url 'main' %}" class="success__button">Вернуться на главную</a>
+    </div>
+</div>
+{% endblock %}

@@ -35,4 +35,25 @@ class BasketAuthCustomer:
                 product_basket.delete()
         elif action == 'delete':
             product_basket.delete()        
+
+    def save_order(self, shipping):
+        data = self.get_basket_info()
+        order = Order.objects.create(customer=data['customer'], price=data['basket_price'], shipping=shipping)
+        order.save()
+        for item in data['basket_products']:
+            product_order = ProductOrder.objects.create(order=order, prod=item.prod, title=item.prod.title, slug=item.prod.slug,
+                                                        price=item.prod.get_price(), quantity=item.quantity,
+                                                        total_price=item.discounted_price)
+            product_order.save()
+
+        self.clear_basket()
+
+
+    def clear_basket(self):
+        products = self.get_basket_info()['basket_products']
+        for item in products:
+            item.prod.quantity -= item.quantity
+            item.prod.save()
+            item.delete()
+
         

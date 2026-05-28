@@ -10,6 +10,10 @@ admin.site.register(BasketItem)
 admin.site.register(Favorites)
 admin.site.register(Region)
 admin.site.register(City)
+admin.site.register(Shipping)
+admin.site.register(Order)
+admin.site.register(ProductOrder)
+
 
 
 @admin.register(ProdModel)

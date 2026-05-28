@@ -4,7 +4,12 @@
     <!-- Товары напрямую из категории -->
     {% for product in category.products.all %}
     <div class="products__item">
-        <a href="{% url "toggle_favorite" slug=product.slug %}" class="products__item-heart"></a>
+{% if product.id in favorites_ids %}
+    <a href="{% url 'toggle_favorite' slug=product.slug %}" class="products__item-heart active"></a>
+{% else %}
+    <a href="{% url 'toggle_favorite' slug=product.slug %}" class="products__item-heart"></a>
+{% endif %}
+
 
         <a href="{{ product.get_absolute_url }}">
             <img src="{{ product.prod_photo.first.image.url }}" alt="" class="products__item-img">
@@ -43,7 +48,12 @@
     {% for subcat in category.subcats.all %}
         {% for product in subcat.products.all %}
     <div class="products__item">
-        <a href="{% url "toggle_favorite" slug=product.slug %}" class="products__item-heart"></a>
+{% if product.id in favorites_ids %}
+    <a href="{% url 'toggle_favorite' slug=product.slug %}" class="products__item-heart active"></a>
+{% else %}
+    <a href="{% url 'toggle_favorite' slug=product.slug %}" class="products__item-heart"></a>
+{% endif %}
+
 
         <a href="{{ product.get_absolute_url }}">
             <img src="{{ product.prod_photo.first.image.url }}" alt="" class="products__item-img">
@@ -82,7 +92,11 @@
     {% else %}
     {% for product in products %}
     <div class="products__item">
-        <a href="{% url "toggle_favorite" slug=product.slug %}" class="products__item-heart"></a>
+{% if product.id in favorites_ids %}
+    <a href="{% url 'toggle_favorite' slug=product.slug %}" class="products__item-heart active"></a>
+{% else %}
+    <a href="{% url 'toggle_favorite' slug=product.slug %}" class="products__item-heart"></a>
+{% endif %}
 
         <a href="{% url 'product' slug=product.slug %}">
             <img src="{{ product.prod_photo.first.image.url }}" alt="" class="products__item-img">
@@ -118,5 +132,29 @@
     {% endfor %}
     {% endif %}
 
-    
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".products__item-heart").forEach(function(heart) {
+        heart.addEventListener("click", function(e) {
+            e.preventDefault();
+            const url = heart.getAttribute("href");
+
+            fetch(url, {
+                method: "GET",
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "added") {
+                    heart.classList.add("active");
+                } else if (data.status === "removed") {
+                    heart.classList.remove("active");
+                }
+            })
+            .catch(err => console.error("Ошибка избранного:", err));
+        });
+    });
+});
+</script>
+
 </div>
