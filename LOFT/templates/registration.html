@@ -36,11 +36,17 @@
                     {{ form.password2 }}
                 </div>
 
+                {% if form.errors %}
+                    <div class="form-errors red-alert">
+                        {{ form.errors }}
+                    </div>
+                {% endif %}
+
             </div>
 
             <div class="registeration__btns">
                 <button type="submit" class="btn registeration__btn">Подтвердить</button>
-                <a href="{% url 'login' %}" class="registeration__links">Уже есть аккаунт?</a>
+                <a href="{% url 'login' %}" class="login-links">Уже есть аккаунт?</a>
             </div>
         </form>
 

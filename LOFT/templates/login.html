@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
 {% block content %}
 <div class="container">
     <div class="registeration__content">
@@ -8,12 +9,7 @@
             {% csrf_token %}
             <h2 class="registeration__title products__title">Авторизация</h2>
 
-            {% if form.non_field_errors %}
-                <div class="form-errors">
-                    {{ form.non_field_errors }}
-                </div>
-            {% endif %}
-
+         
             <div class="registeration__form-grid">
                 <div class="input__title">
                     <h2>E-mail</h2>
@@ -24,8 +20,14 @@
                     {{ form.password }}
                 </div>
             </div>
-
             <button type="submit" class="btn registeration__btn-login _auth">Войти</button>
+            <a href="{% url 'registration' %}" class="reg-link">Регистрация</a>
+               {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
         </form>
     </div>
 </div>

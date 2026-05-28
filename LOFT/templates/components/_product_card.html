@@ -4,11 +4,9 @@
     <!-- Товары напрямую из категории -->
     {% for product in category.products.all %}
     <div class="products__item">
-{% if product.id in favorites_ids %}
-    <a href="{% url 'toggle_favorite' slug=product.slug %}" class="products__item-heart active"></a>
-{% else %}
-    <a href="{% url 'toggle_favorite' slug=product.slug %}" class="products__item-heart"></a>
-{% endif %}
+        
+    <a href="{% url 'toggle_favorite' slug=product.slug %}" 
+    class="products__item-heart {% if product.id in favorites_ids %}active{% endif %}"></a>
 
 
         <a href="{{ product.get_absolute_url }}">

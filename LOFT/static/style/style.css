@@ -852,6 +852,32 @@
     color: #414141;
 }
 
+
+.form-errors {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+}
+
+.reg-link {
+    display: block !important;
+    margin-top: 15px !important;
+    color: #696969 !important;
+    text-decoration: none !important;
+    text-align: center !important;
+}
+
+.login-links{
+    display: block !important;
+    margin-top: 15px !important;
+    color: #696969 !important;
+    text-decoration: none !important;
+    text-align: center !important;
+}
+
 .indicators__links img {
     /* user-select: text; */
     display: block;
