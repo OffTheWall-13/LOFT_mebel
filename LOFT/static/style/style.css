@@ -410,11 +410,6 @@
     margin-bottom: 35px;
 }
 
-.favorites .products__content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
 
 .products__content {
     width: 100%;
@@ -1624,7 +1619,8 @@ label[for="id_file"] {
 
 .profile__content {
     display: flex;
-    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
 }
 
 .profile__form {
@@ -1701,8 +1697,10 @@ label[for="id_file"] {
 }
 
 .profile__orders {
-    width: 100%;        /* таблица на всю ширину */
-    margin-bottom: 40px; /* отступ от формы */
+    flex: 1;
+    min-width: 300px;
+    margin-top: 19px;
+    margin-bottom: 40px;
 }
 
 

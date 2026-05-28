@@ -13,18 +13,13 @@
                             Избранное
                         </h2>
 
-                        <span class="favorites__title-count"> <span>4</span> предметов</span>
-
-                    </div>
-
-                    <div class="products__content">
-                            <!-- /.products__item -->
-                        {% include 'components/_product_card.html' %}
-
-
-                    </div>
-                    <!-- /.products__content -->
+                        <span class="favorites__title-count">{{ products|length }} предметов</span>
+                        
+                    </div>  
+                    
+                    
                 </div>
+                {% include 'components/_product_card.html' %}
             </div>
 
 
