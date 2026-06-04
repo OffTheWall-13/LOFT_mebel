@@ -1,0 +1,375 @@
+[
+  {
+    "model": "LOFT.cat",
+    "pk": 1,
+    "fields": {
+      "title": "Кухни",
+      "slug": "kuhni",
+      "parent": null
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 2,
+    "fields": {
+      "title": "Спальни",
+      "slug": "spalni",
+      "parent": null
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 3,
+    "fields": {
+      "title": "Гостиные",
+      "slug": "gostinye",
+      "parent": null
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 4,
+    "fields": {
+      "title": "Прихожие",
+      "slug": "prihozhie",
+      "parent": null
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 5,
+    "fields": {
+      "title": "Офисная мебель",
+      "slug": "ofisnaya-mebel",
+      "parent": null
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 6,
+    "fields": {
+      "title": "Детская",
+      "slug": "detskaya",
+      "parent": null
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 7,
+    "fields": {
+      "title": "Акции",
+      "slug": "akcii",
+      "parent": null
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 8,
+    "fields": {
+      "title": "Диваны",
+      "slug": "divany",
+      "parent": 3
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 9,
+    "fields": {
+      "title": "Барные стулья",
+      "slug": "barnye-stulya",
+      "parent": 1
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 10,
+    "fields": {
+      "title": "Геймерские кресла",
+      "slug": "gejmerskie-kresla",
+      "parent": 5
+    }
+  },
+  {
+    "model": "LOFT.cat",
+    "pk": 11,
+    "fields": {
+      "title": "Журнальные столы",
+      "slug": "zhurnalnye-stoly",
+      "parent": 2
+    }
+  },
+  {
+    "model": "LOFT.prodmodel",
+    "pk": 1,
+    "fields": {
+      "title": "Диван Tixon",
+      "slug": "divan-tixon"
+    }
+  },
+  {
+    "model": "LOFT.prodmodel",
+    "pk": 2,
+    "fields": {
+      "title": "Диван Динс Velvet",
+      "slug": "divan-dins-velvet"
+    }
+  },
+  {
+    "model": "LOFT.prodmodel",
+    "pk": 3,
+    "fields": {
+      "title": "MSI CH120",
+      "slug": "msi-ch120"
+    }
+  },
+  {
+    "model": "LOFT.prodmodel",
+    "pk": 4,
+    "fields": {
+      "title": "Барный Стул",
+      "slug": "barnyj-stul"
+    }
+  },
+  {
+    "model": "LOFT.prodmodel",
+    "pk": 5,
+    "fields": {
+      "title": "Журнальный стол деревянный",
+      "slug": "zhurnalnyj-stol-derevyannyj"
+    }
+  },
+  {
+    "model": "LOFT.prod",
+    "pk": 1,
+    "fields": {
+      "title": "Диван Динс Velvet Yellow",
+      "slug": "divan-dins-velvet-yellow",
+      "prod_model": 2,
+      "description": "Желтый диван с мягкими подлокотниками",
+      "quantity": 14,
+      "price": 2999,
+      "discount": 0,
+      "height": 70,
+      "width": 110,
+      "length": 250,
+      "color_name": "Жёлтый",
+      "color_code": "#FFD700",
+      "category": 8,
+      "created_at": "2026-05-07T20:26:34.421Z",
+      "updated_at": "2026-05-27T19:44:23.603Z"
+    }
+  },
+  {
+    "model": "LOFT.prod",
+    "pk": 2,
+    "fields": {
+      "title": "Коричневый барный стул",
+      "slug": "barnyj-stul",
+      "prod_model": 4,
+      "description": "Стул барный высокий",
+      "quantity": 13,
+      "price": 200,
+      "discount": 0,
+      "height": 100,
+      "width": 59,
+      "length": 59,
+      "color_name": "Коричневый",
+      "color_code": "#8B4513",
+      "category": 9,
+      "created_at": "2026-05-18T09:31:31.117Z",
+      "updated_at": "2026-05-27T20:29:25.924Z"
+    }
+  },
+  {
+    "model": "LOFT.prod",
+    "pk": 3,
+    "fields": {
+      "title": "Диван Tixon серый",
+      "slug": "divan-tixon-seryj",
+      "prod_model": 1,
+      "description": "диван серый на 3 персоны",
+      "quantity": 15,
+      "price": 200,
+      "discount": 0,
+      "height": 100,
+      "width": 100,
+      "length": 100,
+      "color_name": "Серый",
+      "color_code": "#D3D3D3",
+      "category": 8,
+      "created_at": "2026-05-18T19:40:14.475Z",
+      "updated_at": "2026-05-22T19:00:30.340Z"
+    }
+  },
+  {
+    "model": "LOFT.prod",
+    "pk": 4,
+    "fields": {
+      "title": "Диван Динс Velvet Silver",
+      "slug": "divan-dins-velvet-silver",
+      "prod_model": 2,
+      "description": "Серый диван с мягкими подлокотниками",
+      "quantity": 14,
+      "price": 4999,
+      "discount": 5,
+      "height": 70,
+      "width": 110,
+      "length": 250,
+      "color_name": "Серебристый",
+      "color_code": "#696969",
+      "category": 8,
+      "created_at": "2026-05-22T19:04:57.637Z",
+      "updated_at": "2026-05-27T19:44:23.685Z"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 2,
+    "fields": {
+      "prod": 1,
+      "image": "products/27_dXRyoOZ.png"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 3,
+    "fields": {
+      "prod": 1,
+      "image": "products/1.png"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 4,
+    "fields": {
+      "prod": 1,
+      "image": "products/3.png"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 5,
+    "fields": {
+      "prod": 1,
+      "image": "products/4.png"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 6,
+    "fields": {
+      "prod": 1,
+      "image": "products/5.png"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 7,
+    "fields": {
+      "prod": 2,
+      "image": "products/6825928497.jpg"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 8,
+    "fields": {
+      "prod": 3,
+      "image": "products/mf-s-018-16v1-n30xlv2-2-65n-def-cmf13-cvv-iz-ddg-v02.jpg"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 10,
+    "fields": {
+      "prod": 3,
+      "image": "products/mf-s-044-16v1-n30xlv2-2-65n-sn-def-cmf13-cvv-ia-dvt-v01.jpg"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 11,
+    "fields": {
+      "prod": 4,
+      "image": "products/OIP.webp"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 12,
+    "fields": {
+      "prod": 4,
+      "image": "products/OIP_1.webp"
+    }
+  },
+  {
+    "model": "LOFT.prodphoto",
+    "pk": 13,
+    "fields": {
+      "prod": 4,
+      "image": "products/OIP_2.webp"
+    }
+  },
+  {
+    "model": "LOFT.region",
+    "pk": 1,
+    "fields": {
+      "name": "Ташкентская область"
+    }
+  },
+  {
+    "model": "LOFT.region",
+    "pk": 2,
+    "fields": {
+      "name": "Самаркандская область"
+    }
+  },
+  {
+    "model": "LOFT.city",
+    "pk": 1,
+    "fields": {
+      "name": "Ташкент",
+      "region": 1
+    }
+  },
+  {
+    "model": "LOFT.city",
+    "pk": 2,
+    "fields": {
+      "name": "Алмалык",
+      "region": 1
+    }
+  },
+  {
+    "model": "LOFT.city",
+    "pk": 3,
+    "fields": {
+      "name": "Чирчик",
+      "region": 1
+    }
+  },
+  {
+    "model": "LOFT.city",
+    "pk": 4,
+    "fields": {
+      "name": "Самарканд",
+      "region": 2
+    }
+  },
+  {
+    "model": "LOFT.city",
+    "pk": 5,
+    "fields": {
+      "name": "Каттакурган",
+      "region": 2
+    }
+  },
+  {
+    "model": "LOFT.city",
+    "pk": 6,
+    "fields": {
+      "name": "Джизак",
+      "region": 2
+    }
+  }
+]
