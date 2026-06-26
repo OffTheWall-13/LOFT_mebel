@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'mebel.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Loft_mebel',
+        'USER': 'mysite_user',
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
